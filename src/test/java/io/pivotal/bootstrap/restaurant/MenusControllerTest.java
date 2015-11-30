@@ -1,6 +1,6 @@
 package io.pivotal.bootstrap.restaurant;
 
-import org.cloudfoundry.client.lib.org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;

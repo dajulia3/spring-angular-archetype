@@ -1,7 +1,8 @@
 package io.pivotal.bootstrap.restaurant;
 
-import org.cloudfoundry.client.lib.org.codehaus.jackson.annotate.JsonCreator;
-import org.cloudfoundry.client.lib.org.codehaus.jackson.annotate.JsonProperty;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
