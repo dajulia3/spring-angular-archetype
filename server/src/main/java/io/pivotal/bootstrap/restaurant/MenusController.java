@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import static java.util.Arrays.asList;
 
-@Controller
+@RestController
 public class MenusController {
 
     @RequestMapping("/menu")
-    @ResponseBody
     public GetMenuResponse getMenu() {
         return new GetMenuResponse(new Menu(asList(new MenuItem("apples"))));
     }
