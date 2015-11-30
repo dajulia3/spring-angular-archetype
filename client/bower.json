@@ -1,0 +1,27 @@
+{
+  "name": "restaurant-client",
+  "description": "View menus online for our awesome restaurant",
+  "main": "index.js",
+  "authors": [
+    "Anna Yu and David Julia <pair+ayu+djulia@pivotallabs.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "angular"
+  ],
+  "homepage": "https://github.com/pivotal-chicago/spring-angular-archetype",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular-mocks": "~1.4.8"
+  },
+  "dependencies": {
+    "angular": "~1.4.8"
+  }
+}

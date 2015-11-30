@@ -1,0 +1,24 @@
+{
+  "name": "restaurant-client",
+  "version": "1.0.0",
+  "description": "View menus online for our awesome restaurant",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pivotal-chicago/spring-angular-archetype"
+  },
+  "keywords": [
+    "angular"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pivotal-chicago/spring-angular-archetype/issues"
+  },
+  "homepage": "https://github.com/pivotal-chicago/spring-angular-archetype",
+  "devDependencies": {
+  }
+}
