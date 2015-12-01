@@ -3,19 +3,24 @@ package io.pivotal.bootstrap.restaurant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.stereotype.Controller;
+import io.pivotal.bootstrap.restaurant.services.MenusService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import static java.util.Arrays.asList;
 
 @RestController
 public class MenusController {
 
+    private final MenusService menusService;
+
+    @Autowired
+    public MenusController(MenusService menusService) {
+        this.menusService = menusService;
+    }
+
     @RequestMapping("/menu")
     public GetMenuResponse getMenu() {
-        return new GetMenuResponse(new Menu(asList(new MenuItem("apples"))));
+        return new GetMenuResponse(menusService.getMenu());
     }
 
 
