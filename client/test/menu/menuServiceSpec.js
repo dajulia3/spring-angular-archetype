@@ -1,16 +1,16 @@
 describe('menuService', function () {
-    var menuService, $httpBackend;
+    var menuService;
+    var $httpBackend;
 
-    beforeEach(function () {
-        module('restaurant.menu');
-        inject(function (_menuService_, _$httpBackend_) {
-            menuService = _menuService_;
-            $httpBackend = _$httpBackend_;
+    beforeEach(module('restaurant.menu'));
 
-            $httpBackend.when('GET', '/menu')
-                .respond(200, {'menu': {'items': [{'name': 'apples'}]}});
-        });
-    });
+    beforeEach(inject(function (_menuService_, _$httpBackend_) {
+        menuService = _menuService_;
+        $httpBackend = _$httpBackend_;
+
+        $httpBackend.when('GET', '/menu')
+            .respond(200, {'menu': {'items': [{'name': 'apples'}]}});
+    }));
 
     describe('#get', function () {
         it('gets the menu with menu items', function () {

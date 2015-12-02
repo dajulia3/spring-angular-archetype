@@ -63,8 +63,8 @@ module.exports = function (grunt) {
                     files: [
                         'bower_components/angular/angular.js',
                         'bower_components/angular-mocks/angular-mocks.js',
-                        '*Module.js', //module definitions first things in the modules
-                        'src/**/*Module.js',
+                        '*.js',
+                        'src/**/*Module.js', //module definitions first things in the modules
                         'src/**/*!(Module).js',
                         'test/**/*!(Spec).js', //test helpers before tests
                         'test/**/*Spec.js'
@@ -98,7 +98,7 @@ module.exports = function (grunt) {
         copy: {
             files: [
                 // includes files within path
-                {expand: true, cwd: 'src', src: ['index.html'], dest: 'dist/', filter: 'isFile'},
+                {expand: true, cwd: 'src', src: ['index.html'], dest: 'dist/', filter: 'isFile'}
             ]
         },
 
