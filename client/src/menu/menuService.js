@@ -1,5 +1,7 @@
-module('menu').factory('menuService', function menuService() {
+angular.module('restaurant.menu', []).service('menuService', function($http) {
     return {
-        get: function() { return "menu"; }
-    };
+            get: function() {
+                return $http.get('/menu');
+            }
+        };
 });

@@ -2,7 +2,7 @@ describe('menuService', function () {
     var menuService, $httpBackend;
 
     beforeEach(function () {
-        module('menu');
+        module('restaurant.menu');
         inject(function (_menuService_, _$httpBackend_) {
             menuService = _menuService_;
             $httpBackend = _$httpBackend_;

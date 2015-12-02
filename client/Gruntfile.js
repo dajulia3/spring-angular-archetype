@@ -61,8 +61,8 @@ module.exports = function (grunt) {
                     browsers: ['Chrome'],
                     frameworks: ['jasmine'],
                     files: [
-                        'bower_components/angular/angular.js', //probably need all our runtime dependencies
-                        'bower_components/angular-mocks/angular-mocks.js', //probably need all our runtime dependencies
+                        'bower_components/angular/angular.js',
+                        'bower_components/angular-mocks/angular-mocks.js',
                         '*Module.js', //module definitions first things in the modules
                         'src/**/*Module.js',
                         'src/**/*!(Module).js',
