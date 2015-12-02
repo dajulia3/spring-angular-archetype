@@ -56,21 +56,25 @@ module.exports = function (grunt) {
         },
 
         karma: {
-            options: {
-                frameworks: ['jasmine'],
-                browsers: ['PhantomJS']
-            },
-            files: [
-                'bower_components/**/*.js', //probably need all our runtime dependencies
-                'src/**/*Module.js', //module definitions first things in the modules
-                'src/**/*!(Module).js',
-                'test/**/*!(Spec).js', //test helpers before tests
-                'test/**/*Spec.js'
-            ],
-            reporters: ['progress'],
-            singleRun: true,
-            junitReporter: {
-                outputFile: 'test-results.xml'
+            unit: {
+                options: {
+                    browsers: ['Chrome'],
+                    frameworks: ['jasmine'],
+                    files: [
+                        'bower_components/angular/angular.js', //probably need all our runtime dependencies
+                        'bower_components/angular-mocks/angular-mocks.js', //probably need all our runtime dependencies
+                        '*Module.js', //module definitions first things in the modules
+                        'src/**/*Module.js',
+                        'src/**/*!(Module).js',
+                        'test/**/*!(Spec).js', //test helpers before tests
+                        'test/**/*Spec.js'
+                    ],
+                    reporters: ['progress'],
+                    singleRun: true,
+                    junitReporter: {
+                        outputFile: 'test-results.xml'
+                    }
+                }
             }
         },
 
