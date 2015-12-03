@@ -1,8 +1,8 @@
-<p>This is an awesome menu!</p>
+<div ng-app="menu" ng-controller="menuController">
+    <p>This is an awesome menu!</p>
 
-<p>Menu items: </p>
+    <p>Menu items: </p>
 
-<div ng-controller="menuController">
     <div ng-repeat="menuItem in menuItems">
         {{ menuItem.name }}
     </div>
