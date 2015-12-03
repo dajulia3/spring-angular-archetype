@@ -8,7 +8,7 @@ describe('menuService', function () {
         menuService = _menuService_;
         $httpBackend = _$httpBackend_;
 
-        $httpBackend.when('GET', '/menu')
+        $httpBackend.when('GET', 'localhost:8080/menu')
             .respond(200, {'menu': {'items': [{'name': 'apples'}]}});
     }));
 

@@ -9,11 +9,12 @@ module.exports = function (grunt) {
         grunt.file.expand("src/*").forEach(function (path) {
             // add ngtemplate subtasks for each module, turning
             // all module partials into $templateCache objects
-            if (!grunt.file.isDir(path)) {
+            var dirName = path.substr(path.lastIndexOf('/') + 1);
+            if (!grunt.file.isDir(path) || dirName === 'config') {
                 return;
             }
             // get the module name by looking at the directory we're in (camelCase it)
-            var moduleName = camelCase(path.substr(path.lastIndexOf('/') + 1));
+            var moduleName = camelCase(dirName);
 
             console.error("module", moduleName);
             ngtemplates[moduleName] = {
@@ -31,7 +32,7 @@ module.exports = function (grunt) {
 
         concat: {
             dist: {
-                src: ['src/**/*.js'],
+                src: ['app.js', 'src/**/*.js'],
                 dest: 'dist/<%= pkg.name %>.js'
             }
         },
@@ -63,6 +64,7 @@ module.exports = function (grunt) {
                     files: [
                         'bower_components/angular/angular.js',
                         'bower_components/angular-mocks/angular-mocks.js',
+                        'bower_components/angular-ui-router/release/angular-ui-router.js',
                         '*.js',
                         'src/**/*Module.js', //module definitions first things in the modules
                         'src/**/*!(Module).js',

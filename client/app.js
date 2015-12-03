@@ -1,1 +1,1 @@
-angular.module('restaurant', ['restaurant.menu']);
+angular.module('restaurant', ['restaurant.menu', 'ui.router']);
