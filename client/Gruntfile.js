@@ -6,7 +6,7 @@ module.exports = function (grunt) {
 
         // loop through our modules directory and create subtasks
         // for each module, modifying tasks that affect modules.
-        grunt.file.expand("src/*").forEach(function (path) {
+        grunt.file.expand("public/javascripts/*").forEach(function (path) {
             // add ngtemplate subtasks for each module, turning
             // all module partials into $templateCache objects
             var dirName = path.substr(path.lastIndexOf('/') + 1);
@@ -20,7 +20,7 @@ module.exports = function (grunt) {
             ngtemplates[moduleName] = {
                 module: moduleName,
                 src: path + "/*.html",
-                dest: 'temp/modules/' + moduleName + '/' + moduleName + '.templates.min.js'
+                dest: 'public/templates/modules/' + moduleName + '/' + moduleName + '.templates.min.js'
             };
         });
 
@@ -30,10 +30,14 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        connect: {
+            uses_defaults: {}
+        },
+
         concat: {
             dist: {
-                src: ['app.js', 'src/**/*.js'],
-                dest: 'dist/<%= pkg.name %>.js'
+                src: ['public/app.js', 'public/javascripts/**/*.js'],
+                dest: 'public/dist/<%= pkg.name %>.js'
             }
         },
 
@@ -43,7 +47,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
-                    'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+                    'public/dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
                 }
             }
         },
@@ -51,7 +55,7 @@ module.exports = function (grunt) {
         jshint: {
             files: [
                 '*.js',
-                'src/**/*.js',
+                'public/javascripts/**/*.js',
                 'test/**/*.js'
             ]
         },
@@ -65,9 +69,9 @@ module.exports = function (grunt) {
                         'bower_components/angular/angular.js',
                         'bower_components/angular-mocks/angular-mocks.js',
                         'bower_components/angular-ui-router/release/angular-ui-router.js',
-                        '*.js',
-                        'src/**/*Module.js', //module definitions first things in the modules
-                        'src/**/*!(Module).js',
+                        'public/*.js',
+                        'public/javascripts/**/*Module.js', //module definitions first things in the modules
+                        'public/javascripts/**/*!(Module).js',
                         'test/**/*!(Spec).js', //test helpers before tests
                         'test/**/*Spec.js'
                     ],
@@ -87,26 +91,27 @@ module.exports = function (grunt) {
                     sourceMap: true
                 },
                 files: {
-                    "dist/<%= pkg.name %>.min.css": "assets/stylesheets/*.less"
+                    "public/dist/<%= pkg.name %>.min.css": "public/stylesheets/*.less"
                 }
             }
         },
 
         watch: {
-            files: ['src/**/*', 'src/*', 'assets/stylesheets/*.less'],
+            files: ['public/javascripts/**/*', 'public/javascripts/*', 'public/stylesheets/*.less'],
             tasks: ['less', 'prepModuleTemplates', 'ngtemplates', 'concat', 'uglify']
         },
 
         copy: {
             files: [
                 // includes files within path
-                {expand: true, cwd: 'src', src: ['index.html'], dest: 'dist/', filter: 'isFile'}
+                {expand: true, cwd: 'public/javascripts', src: ['index.html'], dest: 'public/dist/', filter: 'isFile'}
             ]
         },
 
-        clean: ['dist/']
+        clean: ['public/dist/']
     });
 
+    grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
