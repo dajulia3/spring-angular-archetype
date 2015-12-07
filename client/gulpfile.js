@@ -15,19 +15,9 @@ var jshint = require('gulp-jshint'),
     connect = require('gulp-connect'),
     path = require('path'),
     fs = require("fs"),
+    templateCache = require('gulp-angular-templatecache'),
+    merge = require('merge-stream'),
     through = require('through2');
-
-
-function NoopPlugin(file, encoding, done) {
-    this.push(file);
-    return done();
-};
-
-function gulpPlugin(){
-    return through.obj(NoopPlugin);
-}
-
-module.exports = gulpPlugin;
 
 const config = {
     distPath: './dist'
@@ -47,6 +37,58 @@ gulp.task('sass', function () {
         .pipe(gulp.dest(config.distPath));
 });
 
+
+function endsWith(suffix){
+    return this.substr(-suffix.length) === suffix
+}
+function getAllModuleFilesFromDirectoryAndAssertMaxOneModuleFile(dir) {
+    var moduleFiles = fs.readdirSync(dir).filter(function (file) {
+        return endsWith.bind(file)("Module.js");
+    });
+    if (moduleFiles.length > 1) {
+        throw "More than 1 Module file (*Module.js) was found in the directory! That's not how we do things around here!";
+    }
+    return moduleFiles;
+}
+function getModuleFileFromDirectory(dir) {
+    var moduleFiles = getAllModuleFilesFromDirectoryAndAssertMaxOneModuleFile(dir);
+    return moduleFiles[0];
+}
+
+function containsModuleFile(dir){
+    return getAllModuleFilesFromDirectoryAndAssertMaxOneModuleFile(dir).length === 1;
+}
+function getModuleFolders(dir) {
+    return fs.readdirSync(dir)
+        .filter(function (file) {
+            return fs.statSync(path.join(dir, file)).isDirectory() && containsModuleFile(path.join(dir,file));
+        });
+}
+
+function moduleNameFromDirectory(dir) {
+    var file = getModuleFileFromDirectory(dir);
+    var deps = ngDeps(file.contents);
+    console.error("deps", deps);
+    const moduleDefinitions = deps.modules;
+    console.error("moduleFile:", moduleDefinitions);
+    for (var moduleName in moduleDefinitions) {
+        if (moduleDefinitions.hasOwnProperty(moduleName)) {
+            return moduleName
+        }
+    }
+}
+
+function templatesStream() {
+    var modules = getModuleFolders("./src");
+    var moduleTasks = modules.map(function (folder) {
+        return gulp.src(folder + '/*.html', {cwd: './src'})
+            .pipe(templateCache({module: folder, root: folder}))//TODO: eventually make this grab the module name from angular, so it doesnt have to match exactly the directory.
+            .pipe(concat("templates.js"))
+            .pipe(gulp.dest(config.distPath));
+    });
+    return merge(moduleTasks)
+}
+
 gulp.task('js', function () {
     var jsFilter = filter('*.js');
 
@@ -58,10 +100,11 @@ gulp.task('js', function () {
         .pipe(concat('vendor.js'));
 
 
-    return eventStream.concat(allFiles, appFiles)
+    return eventStream.concat(allFiles, appFiles, templatesStream() )
         .pipe(order([
             "vendor.js",
-            "app.js"
+            "app.js",
+            "templates.js"
         ]))
         .pipe(concat('app.js'))
         .pipe(uglify())
@@ -96,37 +139,10 @@ gulp.task('connect', function () {
     });
 });
 
-function getFolders(dir) {
-    return fs.readdirSync(dir)
-        .filter(function(file) {
-            return fs.statSync(path.join(dir, file)).isDirectory();
-        });
-}
-function moduleNames(file, encoding, done) {
-    const moduleDefinitions = ngDeps(file.contents).modules;
-    for (var mod in moduleDefinitions) {
-        if( moduleDefinitions.hasOwnProperty( mod ) ) {
-            this.push(mod)
-        }
-    }
-    //TODO: Now define the templateCacheForTheModule!!!
-    return done();
-}
 
-function defineTemplateCacheForModule(){
-    return through.obj(moduleNames);
-}
 
-module.exports = defineTemplateCacheForModule;
 
-gulp.task("cacheTemplates", function(){
-    getFolders("./src").map(function(folder) {
-        return gulp.src(path.join("src", folder, "/*Module.js"))
-            .pipe(defineTemplateCacheForModule());
-    });
-});
-
-gulp.task("reload", function(){
+gulp.task("reload", function () {
     gulp.src(config.distPath + "/*")
         .pipe(connect.reload());
 });
